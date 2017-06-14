@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">starwarslist</string>
+    <string name="label_name">Name:</string>
+    <string name="label_birthday">Birthday:</string>
+    <string name="label_gender">Gender:</string>
+</resources>
