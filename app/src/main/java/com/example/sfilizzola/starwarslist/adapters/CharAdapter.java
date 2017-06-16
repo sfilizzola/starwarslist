@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import com.example.sfilizzola.starwarslist.R;
 import com.example.sfilizzola.starwarslist.model.Character;
 import com.example.sfilizzola.starwarslist.viewholder.CharViewHolder;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -38,8 +39,10 @@ public class CharAdapter extends RecyclerView.Adapter<CharViewHolder> {
     @Override
     public void onBindViewHolder(CharViewHolder holder, int position) {
         Character current = currentList.get(position);
-
-        holder.charPhoto.setImageDrawable(getDrawableByPosition(position));
+        
+        Picasso.with(context)
+                .load(getResourceByPosition(position))
+                .into(holder.charPhoto);
 
         holder.charName.setText(current.getName());
         holder.charBirth.setText(current.getBirth_year());
@@ -47,6 +50,15 @@ public class CharAdapter extends RecyclerView.Adapter<CharViewHolder> {
     }
 
     private Drawable getDrawableByPosition(int position) {
+
+        int resourceId = getResourceByPosition(position);
+        Drawable charPortrait = context.getResources().getDrawable(resourceId);
+        return charPortrait;
+
+    }
+
+
+    public int getResourceByPosition(int position){
 
         int resourceId;
 
@@ -87,8 +99,7 @@ public class CharAdapter extends RecyclerView.Adapter<CharViewHolder> {
                 break;
         }
 
-        Drawable charPortrait = context.getResources().getDrawable(resourceId);
-        return charPortrait;
+        return resourceId;
 
     }
 
