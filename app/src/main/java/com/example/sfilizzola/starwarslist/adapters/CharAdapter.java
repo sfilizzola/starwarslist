@@ -39,7 +39,7 @@ public class CharAdapter extends RecyclerView.Adapter<CharViewHolder> {
     @Override
     public void onBindViewHolder(CharViewHolder holder, int position) {
         Character current = currentList.get(position);
-        
+
         Picasso.with(context)
                 .load(getResourceByPosition(position))
                 .into(holder.charPhoto);
@@ -47,14 +47,6 @@ public class CharAdapter extends RecyclerView.Adapter<CharViewHolder> {
         holder.charName.setText(current.getName());
         holder.charBirth.setText(current.getBirth_year());
         holder.charGender.setText(current.getGender());
-    }
-
-    private Drawable getDrawableByPosition(int position) {
-
-        int resourceId = getResourceByPosition(position);
-        Drawable charPortrait = context.getResources().getDrawable(resourceId);
-        return charPortrait;
-
     }
 
 
