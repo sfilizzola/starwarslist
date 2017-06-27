@@ -47,6 +47,8 @@ public class Character {
         this.url = url;
     }
 
+
+
     public String getName() {
         return name;
     }

@@ -42,11 +42,20 @@ public class CharAdapter extends RecyclerView.Adapter<CharViewHolder> {
 
         Picasso.with(context)
                 .load(getResourceByPosition(position))
+                .resize(80,80)
+                .onlyScaleDown()
+                .centerInside()
                 .into(holder.charPhoto);
 
         holder.charName.setText(current.getName());
         holder.charBirth.setText(current.getBirth_year());
         holder.charGender.setText(current.getGender());
+    }
+
+
+    @Override
+    public int getItemCount() {
+        return currentList.size();
     }
 
 
@@ -93,10 +102,5 @@ public class CharAdapter extends RecyclerView.Adapter<CharViewHolder> {
 
         return resourceId;
 
-    }
-
-    @Override
-    public int getItemCount() {
-        return currentList.size();
     }
 }
