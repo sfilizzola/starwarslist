@@ -12,15 +12,20 @@ import android.widget.ProgressBar;
 import com.example.sfilizzola.starwarslist.adapters.CharAdapter;
 import com.example.sfilizzola.starwarslist.model.Character;
 import com.example.sfilizzola.starwarslist.model.JsonResult;
+import com.example.sfilizzola.starwarslist.retrofit.ApiClient;
 import com.example.sfilizzola.starwarslist.task.CharacterTask;
 
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by sfilizzola on 14/06/17.
  */
 
-public class MainActivity extends AppCompatActivity implements CharacterTask.CharacterTaskCallback {
+public class MainActivity extends AppCompatActivity implements Callback<JsonResult>{
 
     private RecyclerView mRecyclerView;
     private ProgressBar mProgressBar;
@@ -33,14 +38,10 @@ public class MainActivity extends AppCompatActivity implements CharacterTask.Cha
         mRecyclerView = (RecyclerView) findViewById(R.id.list_characters);
         mProgressBar = (ProgressBar) findViewById(R.id.list_progress);
 
-        startAsync();
+        showLoading(true);
+        ApiClient.getServices().characters().enqueue(this);
     }
 
-    private void startAsync() {
-        showLoading(true);
-        CharacterTask task = new CharacterTask(this, this);
-        task.execute();
-    }
 
     private void showLoading(boolean show) {
         mProgressBar.setVisibility(show ? View.VISIBLE : View.GONE);
@@ -59,27 +60,18 @@ public class MainActivity extends AppCompatActivity implements CharacterTask.Cha
             mRecyclerView.setAdapter(adapter);
 
         }
+    }
 
+
+    @Override
+    public void onResponse(Call<JsonResult> call, Response<JsonResult> response) {
+        showLoading(false);
+        initList(response.body());
     }
 
     @Override
-    public void onFinishWithSuccess(JsonResult content) {
+    public void onFailure(Call<JsonResult> call, Throwable t) {
         showLoading(false);
-        initList(content);
-    }
-
-    @Override
-    public void onFinishWithError() {
-        showLoading(false);
-        Snackbar alert = Snackbar.make(findViewById(R.id.main_content), "Error from Network", Snackbar.LENGTH_INDEFINITE);
-
-        alert.setAction("Retry", new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startAsync();
-            }
-        });
-        alert.show();
-
     }
 }
+
